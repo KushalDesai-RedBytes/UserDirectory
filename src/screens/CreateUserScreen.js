@@ -46,22 +46,28 @@ export default class CreateUserScreen extends React.Component {
 
         this.setState({ isLoading: true })
 
+        let params = JSON.stringify({
+          name: this.state.firstName ,
+        })
+
         fetch( AppConstants.apiCreateUser, {
             method: 'POST',
-            body: JSON.stringify({
-              name: this.state.firstName ,
-              job: 'Teacher',
-            }),
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }, 
+            body: params
           })
           .then(response => response.json())
           .then((responseJson)=> {
 
             console.log(responseJson);
+            console.log("JSON:"+JSON.stringify(responseJson));
+            alert("JSON:"+JSON.stringify(responseJson));
             this.setState({ isLoading: false })
   
-            if (responseJson.id !== ''){
+            if (responseJson.name !== ''){
                 //success
-                console.log('Success')
+                console.log('Success '+responseJson.name)
                 this.setState({ isUserAdded: true }, () => {
 
                   //Call goBack() after setState

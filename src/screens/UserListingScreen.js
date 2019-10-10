@@ -34,7 +34,8 @@ export default class UserListingScreen extends React.Component {
       //Hide the splash screen
       SplashScreen.hide();
       
-      this.retrieveUserList();
+      setTimeout(()=>{ this.retrieveUserList() }, 1000)
+      
     }
 
     //Call api to get users list
@@ -85,7 +86,7 @@ export default class UserListingScreen extends React.Component {
             userListData: [], 
             pageNo: 1
           }, () => {
-            this.retrieveUserList();
+            setTimeout(()=>{ this.retrieveUserList() }, 1000)
           });
         }
     };
@@ -126,12 +127,13 @@ export default class UserListingScreen extends React.Component {
       return(
         <View style={styles.container}>
 
+          {this.state.isLoading ? 
           <ActivityIndicator
-               animating = {this.state.isLoading}
+               
                color = '#bc2b78'
                size = "large"
                style = {styles.activityIndicator}/>
-
+            :
           <View style={styles.userlistContainer}>
             <FlatList 
               data = {this.state.userListData}
@@ -160,7 +162,7 @@ export default class UserListingScreen extends React.Component {
               }}
             />
           </View>
-
+          }
             <TouchableOpacity activeOpacity={0.5} 
               style={styles.userCreateButton} onPress={this.createNewUser}>
               <View elevation={5} style={styles.userButton}>
@@ -178,7 +180,8 @@ export default class UserListingScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   activityIndicator: {
     flex: 1,
