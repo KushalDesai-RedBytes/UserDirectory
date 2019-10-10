@@ -1,10 +1,10 @@
 
-const AppConstants = {
-    //Error Strings
-    apiBaseUrl: 'https://reqres.in/',
+const apiBaseUrl = "https://reqres.in/"
 
-    apiUsersList: 'api/users',
-    apiCreateUser: 'api/users'
+const AppConstants = {
+ 
+    apiUsersList: `${apiBaseUrl}api/users`,
+    apiCreateUser: `${apiBaseUrl}api/users`,
 
   };
   

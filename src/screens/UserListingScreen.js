@@ -13,7 +13,7 @@ import {
 
 import AppConstants from '../constants/AppConstants';
 import { AppColor, AppImage, AppFonts } from '../utils';
-
+import SplashScreen from 'react-native-splash-screen'
 
 export default class UserListingScreen extends React.Component {
 
@@ -24,19 +24,24 @@ export default class UserListingScreen extends React.Component {
         isLoading: false,
         userListData: [],
         pageNo: 1,
+        totalPages: 0
       }
     }
 
     //component life0cycle method to be caled after render
     //Retrieve user list from here
     componentDidMount(){
+      //Hide the splash screen
+      SplashScreen.hide();
+      
       this.retrieveUserList();
     }
 
+    //Call api to get users list
     retrieveUserList = () => {
       this.setState({ isLoading: true })
 
-      fetch(AppConstants.apiBaseUrl+AppConstants.apiUsersList)
+      fetch( AppConstants.apiUsersList+'?page='+ this.state.pageNo + '&per_page=10' )
         .then(response => response.json())
         .then((responseJson)=> {
 
@@ -44,20 +49,45 @@ export default class UserListingScreen extends React.Component {
 
           this.setState({
             isLoading: false,
+            totalPages: responseJson.total_pages,
             userListData: responseJson.data
           })
         })
         .catch(error=>console.log(error))
     }
 
-    onRefresh = () => {
-      this.setState({ userListData: [], pageNo: 1 }, )
-      this.setState({
-        userListData: [], 
-        pageNo: 1
-    }, () => {
-        this.afterSetStateFinished();
-    });
+    retrieveUserListAgain = () => {
+      this.setState({ isLoading: true })
+
+      this.state.pageNo += 1;
+
+      fetch( AppConstants.apiUsersList+'?page='+ this.state.pageNo + '&per_page=10' )
+        .then(response => response.json())
+        .then((responseJson)=> {
+
+          console.log(responseJson);
+
+          this.setState({
+            isLoading: false,
+            userListData: [ ...this.state.userListData , ...responseJson.data]
+          })
+        })
+        .catch(error=>console.log(error))
+    }
+
+    onRefresh = data => {
+
+        console.log(data);
+
+        if (data.isUserAdded){
+          
+          this.setState({
+            userListData: [], 
+            pageNo: 1
+          }, () => {
+            this.retrieveUserList();
+          });
+        }
     };
 
     //Go to Create User screen
@@ -109,16 +139,35 @@ export default class UserListingScreen extends React.Component {
               extraData = {this.state}
               renderItem={this.renderItem}
               ItemSeparatorComponent = {this.renderFlatListItemSeparator}
+              onScroll={(event) => {
+                
+                const currentOffset = event.nativeEvent.contentOffset.y;
+                const dif = currentOffset - (this.offset || 0);
+
+                if (Math.abs(dif) < 3) {
+                  console.log('unclear');
+                } else if (dif < 0) {
+                  console.log('up');
+                } else {
+                  console.log('down');
+
+                  if (this.state.pageNo < this.state.totalPages) {
+                    this.retrieveUserListAgain()
+                  }
+                }
+
+                  this.offset = currentOffset;
+              }}
             />
           </View>
 
-          <View style={styles.userCreateButton}>
-            <TouchableOpacity activeOpacity={0.5} onPress={this.createNewUser}>
+            <TouchableOpacity activeOpacity={0.5} 
+              style={styles.userCreateButton} onPress={this.createNewUser}>
               <View elevation={5} style={styles.userButton}>
-                <Image source={AppImage.userAdd} style={{ height: 50, width: 50 }} />
+                <Image source={AppImage.userAdd} style={{ height: 65, width: 65 }} />
               </View>
             </TouchableOpacity>
-          </View>
+          
 
         </View>
       )
@@ -162,13 +211,13 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   userCreateButton: {
-    backgroundColor: 'transparent',
     position: 'absolute',
-    height: '95%',
-    width: '92%',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    marginBottom: 16
+    height: 60,
+    width: 60,
+    alignItems: 'center', 
+    justifyContent: 'center',
+    right: 20,
+    bottom: 20
   },
   userButton: {
     backgroundColor: 'white',

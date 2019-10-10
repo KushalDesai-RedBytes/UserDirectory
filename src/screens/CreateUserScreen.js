@@ -20,6 +20,7 @@ export default class CreateUserScreen extends React.Component {
             isLoading: false,
             firstName: '',
             lastName: '',
+            isUserAdded: false
         }
       }
 
@@ -34,12 +35,18 @@ export default class CreateUserScreen extends React.Component {
           }
       }
 
+      goBack() {
+        const { navigation } = this.props;
+        navigation.goBack();
+        navigation.state.params.onRefresh({ isUserAdded: true });
+      }
+
       //Call service to create user
       createUser = () => {
 
         this.setState({ isLoading: true })
 
-        fetch( AppConstants.apiBaseUrl + AppConstants.apiCreateUser, {
+        fetch( AppConstants.apiCreateUser, {
             method: 'POST',
             body: JSON.stringify({
               name: this.state.firstName ,
@@ -54,10 +61,14 @@ export default class CreateUserScreen extends React.Component {
   
             if (responseJson.id !== ''){
                 //success
-                console.log('success')
+                console.log('Success')
+                this.setState({ isUserAdded: true }, () => {
 
+                  //Call goBack() after setState
+                  this.goBack()
+                })
             } else{ 
-                console.log('failure')
+                console.log('Failure')
             }
           })
           .catch(error=>console.log(error))
