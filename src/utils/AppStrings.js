@@ -3,9 +3,9 @@ const AppStrings = {
   //Error Strings
   internetError: 'Please check your internet connection',
 
-  //RedScreen Strings
-
-  //GreenScreen Strings
+  //Create User String
+  firstName: 'Enter first name',
+  lastName: 'Enter last name',
   
 };
 

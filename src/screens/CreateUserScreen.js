@@ -1,16 +1,13 @@
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   TextInput,
-  Image,
-  TouchableOpacity, ActivityIndicator
+  TouchableOpacity,
 } from 'react-native';
 
-import { AppColor } from '../utils';
+import { AppColor, AppStrings } from '../utils';
 import AppConstants from '../constants/AppConstants';
 import ActivityIndicatorExample from '../components/ActivityIndicatorExample';
 
@@ -88,8 +85,8 @@ export default class CreateUserScreen extends React.Component {
               <View style={styles.contentContainer}>
                 <TextInput 
                     style = {styles.editText}
-                    placeholder = "Enter first name"
-                    placeholderTextColor= '#2475B0'
+                    placeholder = {AppStrings.firstName}
+                    placeholderTextColor= {AppColor.lightBlue}
                     returnKeyType = { "next" }
                     value={this.state.firstName}
                     onSubmitEditing={() => { this.secondTextInput.focus(); }}
@@ -99,8 +96,8 @@ export default class CreateUserScreen extends React.Component {
                 <TextInput 
                     style = {styles.editText}
                     ref={(input) => { this.secondTextInput = input; }}
-                    placeholder = "Enter last name"
-                    placeholderTextColor= '#2475B0'
+                    placeholder = {AppStrings.lastName}
+                    placeholderTextColor= {AppColor.lightBlue}
                     value={this.state.lastName}
                     onChangeText={text => this.setState({ lastName: text })}/>
 
@@ -129,13 +126,13 @@ const styles = StyleSheet.create({
     },
     editText:{
         marginTop: 20,
-        borderColor: '#2475B0',
+        borderColor: AppColor.lightBlue,
         borderWidth: 2,
         borderRadius: 10,
     },
     buttonStyle: {
         marginTop: 20,
-        backgroundColor: '#3498DB',
+        backgroundColor: AppColor.lightBlue,
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',

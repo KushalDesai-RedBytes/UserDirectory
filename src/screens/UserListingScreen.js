@@ -1,14 +1,11 @@
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   FlatList,
   Image,
   TouchableOpacity,
-  ActivityIndicator
 } from 'react-native';
 
 import AppConstants from '../constants/AppConstants';
@@ -29,7 +26,7 @@ export default class UserListingScreen extends React.Component {
       }
     }
 
-    //component life0cycle method to be caled after render
+    //component life-cycle method to be caled after render
     //Retrieve user list from here
     componentDidMount(){
 
@@ -59,6 +56,7 @@ export default class UserListingScreen extends React.Component {
         .catch(error=>console.log(error))
     }
 
+    //Call 'User List' api again and append the list to existing user's data
     retrieveUserListAgain = () => {
       this.setState({ isLoading: true })
 

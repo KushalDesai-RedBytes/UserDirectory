@@ -9,7 +9,7 @@
 import React from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 
-import { RedScreen, GreenScreen } from '../screens';
+// import { RedScreen, GreenScreen } from '../screens';
 
 
 const Routes = () => {
@@ -18,7 +18,7 @@ const Routes = () => {
       <Scene key="root" hideNavBar>
 
           {/* Redscreen */}
-          <Scene key="red"
+          {/* <Scene key="red"
             component={RedScreen}
             title="RED"
             initial
@@ -28,7 +28,7 @@ const Routes = () => {
               component={GreenScreen}
               title="GREEN"
               
-              /> 
+              />  */}
 
       </Scene>
     </Router>
