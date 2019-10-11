@@ -13,7 +13,8 @@ import {
 
 import AppConstants from '../constants/AppConstants';
 import { AppColor, AppImage, AppFonts } from '../utils';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
+import ActivityIndicatorExample from '../components/ActivityIndicatorExample';
 
 export default class UserListingScreen extends React.Component {
 
@@ -31,6 +32,7 @@ export default class UserListingScreen extends React.Component {
     //component life0cycle method to be caled after render
     //Retrieve user list from here
     componentDidMount(){
+
       //Hide the splash screen
       SplashScreen.hide();
       
@@ -128,13 +130,9 @@ export default class UserListingScreen extends React.Component {
         <View style={styles.container}>
 
           {this.state.isLoading ? 
-          <ActivityIndicator
-               
-               color = '#bc2b78'
-               size = "large"
-               style = {styles.activityIndicator}/>
+            <ActivityIndicatorExample />
             :
-          <View style={styles.userlistContainer}>
+            <View style={styles.userlistContainer}>
             <FlatList 
               data = {this.state.userListData}
               keyExtractor={(item, index) => index.toString()}
@@ -163,6 +161,7 @@ export default class UserListingScreen extends React.Component {
             />
           </View>
           }
+
             <TouchableOpacity activeOpacity={0.5} 
               style={styles.userCreateButton} onPress={this.createNewUser}>
               <View elevation={5} style={styles.userButton}>
@@ -183,12 +182,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  activityIndicator: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 80
- },
   itemRowStyle: {
     flex: 1,
     padding: 10

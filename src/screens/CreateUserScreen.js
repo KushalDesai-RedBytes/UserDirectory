@@ -10,8 +10,9 @@ import {
   TouchableOpacity, ActivityIndicator
 } from 'react-native';
 
-import { AppColor, AppImage, AppFonts } from '../utils';
+import { AppColor } from '../utils';
 import AppConstants from '../constants/AppConstants';
+import ActivityIndicatorExample from '../components/ActivityIndicatorExample';
 
 export default class CreateUserScreen extends React.Component {
     constructor(props){
@@ -89,11 +90,15 @@ export default class CreateUserScreen extends React.Component {
                     style = {styles.editText}
                     placeholder = "Enter first name"
                     placeholderTextColor= '#2475B0'
+                    returnKeyType = { "next" }
                     value={this.state.firstName}
+                    onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                    blurOnSubmit={false}
                     onChangeText={text => this.setState({ firstName:  text })}/>
 
                 <TextInput 
                     style = {styles.editText}
+                    ref={(input) => { this.secondTextInput = input; }}
                     placeholder = "Enter last name"
                     placeholderTextColor= '#2475B0'
                     value={this.state.lastName}
@@ -106,13 +111,9 @@ export default class CreateUserScreen extends React.Component {
                 </TouchableOpacity>
               </View>
 
-              <ActivityIndicator
-               animating = {this.state.isLoading}
-               color = '#bc2b78'
-               size = "large"
-               style = {styles.activityIndicator}/>
+              {this.state.isLoading ? <ActivityIndicatorExample /> : null }
+              
 
-            
           </View>
         )
       }
@@ -123,12 +124,6 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center'
     },
-    activityIndicator: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 80
-     },
     contentContainer: {
         width: '90%',
     },
